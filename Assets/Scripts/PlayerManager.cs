@@ -2,11 +2,16 @@ using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerManager : NetworkBehaviour
 {
     //Card1 and Card2 are located in the inspector, whereas PlayerArea, EnemyArea, and DropZone are located at runtime within OnStartClient()    
     public GameObject ControlCard;
+    public GameObject ControlCard1;
+    public GameObject ControlCard2;
+    public GameObject ControlCard3;
+    public GameObject ControlCard4;
     public GameObject PlayerArea;
     public GameObject EnemyArea;
     public GameObject DropZone;
@@ -28,6 +33,10 @@ public class PlayerManager : NetworkBehaviour
     public override void OnStartServer()
     {
         cards.Add(ControlCard);//todas las cartas
+        cards.Add(ControlCard1);
+        cards.Add(ControlCard2);
+        cards.Add(ControlCard3);
+        cards.Add(ControlCard4);
     }
 
     //Commands are methods requested by Clients to run on the Server, and require the [Command] attribute immediately preceding them. CmdDealCards() is called by the DrawCards script attached to the client Button
@@ -35,11 +44,34 @@ public class PlayerManager : NetworkBehaviour
     public void CmdDealCards()
     {
         //(5x) Spawn a random card from the cards deck on the Server, assigning authority over it to the Client that requested the Command. Then run RpcShowCard() and indicate that this card was "Dealt"
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 1; i++)
         {
-            GameObject card = Instantiate(cards[0], new Vector2(0, 0), Quaternion.identity);
-            NetworkServer.Spawn(card, connectionToClient);
-            RpcShowCard(card, "Dealt");
+            GameManager gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+            
+            int pos = gm.CardsPlayed;
+            Debug.Log("pos: " + pos );
+
+
+            if (pos < cards.Count)
+            {
+                GameObject card = Instantiate(cards[pos], new Vector2(0, 0), Quaternion.identity);
+                //Debug.Log("rotacionantes del spawn " + card.transform.rotation);
+                NetworkServer.Spawn(card, connectionToClient);
+                RpcShowCard(card, "Dealt");
+
+                if (isServer)
+                {
+                    UpdateCardsPlayed();
+                }
+                
+            }
+            else
+            {
+                Debug.Log("Juego Terminado!!");
+            }
+
+            
+
         }
     }
 
@@ -58,7 +90,7 @@ public class PlayerManager : NetworkBehaviour
         //If this is the Server, trigger the UpdateTurnsPlayed() method to demonstrate how to implement game logic on card drop
         if (isServer)
         {
-              UpdateCardsPlayed(); //UpdateTurnsPlayed(); 
+           //   UpdateCardsPlayed(); //UpdateTurnsPlayed(); 
         }
     }
 
@@ -69,7 +101,7 @@ public class PlayerManager : NetworkBehaviour
     {
         GameManager gm = GameObject.Find("GameManager").GetComponent<GameManager>();
         gm.UpdateCardsPlayed();//TODO
-        RpcLogToClients("Turns Played: " + gm.TurnsPlayed);
+        RpcLogToClients("Cartas Jugadas: " + gm.CardsPlayed);
 
     }
 
@@ -89,12 +121,28 @@ public class PlayerManager : NetworkBehaviour
         {
             if (isOwned)
             {
-                card.transform.SetParent(PlayerArea.transform, false);
+                card.transform.Rotate(0, 0, -90);
+                card.gameObject.transform.localScale = new Vector3((float)0.7, (float)0.7, 0);
+                card.transform.SetParent(EnemyArea.transform, false);
+
+               // Debug.Log("rotacion: " + card.transform.rotation);
+              //  Debug.Log("son mias");
+                
             }
             else
             {
-                card.transform.SetParent(EnemyArea.transform, false);
-                card.GetComponent<CardFlipper>().Flip();
+                //card.transform.Rotate(0, 0, -90);
+                //card.gameObject.transform.localScale = new Vector3((float)0.7, (float)0.7, 0);
+                //card.transform.Rotate(0, 0, 90);
+                card.transform.SetParent(PlayerArea.transform, false);
+
+                Debug.Log("no son mias");
+              //  Debug.Log("rotacion: " + card.transform.rotation);
+
+                
+
+                //card.GetComponent<CardFlipper>().Flip();
+
             }
         }
         //if the card has been "Played," send it to the DropZone. If this Client doesn't have authority over it, flip it so the player can now see the front!
@@ -127,13 +175,13 @@ public class PlayerManager : NetworkBehaviour
     [TargetRpc]
     void TargetSelfCard()
     {
-        Debug.Log("Targeted by self!");
+       // Debug.Log("Targeted by self!");
     }
 
     [TargetRpc]
     void TargetOtherCard(NetworkConnection target)
     {
-        Debug.Log("Targeted by other!");
+       // Debug.Log("Targeted by other!");
     }
 
     //CmdIncrementClick() is called by the IncrementClick script
@@ -148,6 +196,6 @@ public class PlayerManager : NetworkBehaviour
     void RpcIncrementClick(GameObject card) 
     {
         card.GetComponent<IncrementClick>().NumberOfClicks++;
-        Debug.Log("This card has been clicked " + card.GetComponent<IncrementClick>().NumberOfClicks + " times!");
+       // Debug.Log("This card has been clicked " + card.GetComponent<IncrementClick>().NumberOfClicks + " times!");
     }
 }

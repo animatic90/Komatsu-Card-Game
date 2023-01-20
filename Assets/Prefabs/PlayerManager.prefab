@@ -50,6 +50,10 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   ControlCard: {fileID: 5131143479334348397, guid: 410b1687efdab9a449afdaa208ba595e, type: 3}
+  ControlCard1: {fileID: 5131143479334348397, guid: dca2bf4b215b5e844951c2caf7344e95, type: 3}
+  ControlCard2: {fileID: 5131143479334348397, guid: d3a5d68ecf0fe654c999b947187a17dc, type: 3}
+  ControlCard3: {fileID: 5131143479334348397, guid: fb3ae2c8341517341b1e3c17c78bedec, type: 3}
+  ControlCard4: {fileID: 5131143479334348397, guid: 5938b0289ee4d3a40bafa4932b30a845, type: 3}
   PlayerArea: {fileID: 0}
   EnemyArea: {fileID: 0}
   DropZone: {fileID: 0}

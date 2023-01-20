@@ -41,14 +41,14 @@ public class DragDrop : NetworkBehaviour
         //in our scene, if this gameobject collides with something, it must be the dropzone, as specified in the layer collision matrix (cards are part of the "Cards" layer and the dropzone is part of the "DropZone" layer)
         _isOverDropZone = true;
         _collisionCard = collision.gameObject;
-        Debug.Log("is enter");
+       // Debug.Log("is enter");
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
         _isOverDropZone = false;
         _collisionCard = null;
-        Debug.Log("is exit"); 
+      //  Debug.Log("is exit"); 
     }
 
     //StartDrag() is called by the Begin Drag event in the Event Trigger component attached to this gameobject
