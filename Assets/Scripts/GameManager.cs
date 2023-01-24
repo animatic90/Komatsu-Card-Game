@@ -7,6 +7,7 @@ public class GameManager : NetworkBehaviour
 {
     //This simple GameManager script is attached to a Server-only game object, demonstrating how to implement game logic tracked by the Server
     public int cardsDealed = 0;
+    public int riskCardsDealed = 0;
     public int cardsPlayed = 0;
     //public int conectedPlayers = -1; //-1 si hay server dedicado , 0 si es client y host
     public int conectedPlayers; //ahora lo traemos desde el CustomNetworkManager
@@ -26,6 +27,11 @@ public class GameManager : NetworkBehaviour
     public void UpdateCardsDealed()
     {
         cardsDealed++;
+    }
+
+    public void UpdateRiskCardsDealed()
+    {
+        riskCardsDealed++;
     }
 
     public void UpdateCardsPlayed()

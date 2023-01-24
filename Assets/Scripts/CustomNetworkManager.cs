@@ -20,21 +20,8 @@ public class CustomNetworkManager : NetworkManager
         gm.UpdateConectedPlayers(numPlayers);
 
        // Debug.Log("numero de players en gm: " + gm.conectedPlayers);
-
-        //GameManager gm = conn.identity.GetComponent<GameManager>();
-        //gm.UpdateConectedPlayers(numPlayers);
-
-
-
         //   PlayerManager pm = conn.identity.GetComponent<PlayerManager>();
-        // conn.identity.tag = gm.getTag(conn.identity.GetInstanceID());
-
-        //Debug.Log("server cnm: " + conn.identity.connectionToServer.connectionId);
-       // Debug.Log("connectionId cnm: " + conn.identity.connectionToClient.connectionId);
-        conn.identity.tag = conn.identity.connectionToClient.connectionId.ToString();
-        Debug.Log("tag cnm: " + conn.identity.tag);
-
-
+      
     }
   
 }

@@ -50,14 +50,20 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   controlCard: {fileID: 5131143479334348397, guid: 410b1687efdab9a449afdaa208ba595e, type: 3}
-  controlCard1: {fileID: 5131143479334348397, guid: dca2bf4b215b5e844951c2caf7344e95, type: 3}
-  controlCard2: {fileID: 5131143479334348397, guid: d3a5d68ecf0fe654c999b947187a17dc, type: 3}
-  controlCard3: {fileID: 5131143479334348397, guid: fb3ae2c8341517341b1e3c17c78bedec, type: 3}
-  controlCard4: {fileID: 5131143479334348397, guid: 5938b0289ee4d3a40bafa4932b30a845, type: 3}
   playerArea: {fileID: 0}
   enemyAreaL: {fileID: 0}
   enemyAreaR: {fileID: 0}
   dropZone: {fileID: 0}
+  riskCards:
+  - {fileID: 7025669376956878331, guid: eac412acd1406d649807c6e300e69089, type: 3}
+  - {fileID: 7025669376956878331, guid: 4fbf8006495b3264c8532cc67256ae23, type: 3}
+  - {fileID: 7025669376956878331, guid: b9492d6910cc6d74aa7567d0ef9cc8d9, type: 3}
+  - {fileID: 7025669376956878331, guid: e1e7f2f27a49cfd439da0292be4a3c3c, type: 3}
+  - {fileID: 7025669376956878331, guid: a048cd1e358c0c04983441030d6763ee, type: 3}
+  - {fileID: 7025669376956878331, guid: c0f548beedf7c554fa6b391a7228b6a4, type: 3}
+  - {fileID: 7025669376956878331, guid: 412e026f690aa0848bc045526a8c9f00, type: 3}
+  - {fileID: 7025669376956878331, guid: 2d869f190187dde4fbc0edd8d4aa4149, type: 3}
+  - {fileID: 7025669376956878331, guid: bef258d93351a2b499aff3526fe6f6b8, type: 3}
 --- !u!114 &737733039919106136
 MonoBehaviour:
   m_ObjectHideFlags: 0

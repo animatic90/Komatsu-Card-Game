@@ -10,16 +10,12 @@ public class PlayerManager : NetworkBehaviour
 {
     //Card1 and Card2 are located in the inspector, whereas PlayerArea, EnemyArea, and DropZone are located at runtime within OnStartClient()    
     public GameObject controlCard;
-    public GameObject controlCard1;
-    public GameObject controlCard2;
-    public GameObject controlCard3;
-    public GameObject controlCard4;
     public GameObject playerArea;
     public GameObject enemyAreaL;
     public GameObject enemyAreaR;
     public GameObject dropZone;
 
-
+    public List<GameObject> riskCards = new List<GameObject>();
     //the cards List represents our deck of cards
     List<GameObject> controlCards = new List<GameObject>();
 
@@ -30,86 +26,101 @@ public class PlayerManager : NetworkBehaviour
         playerArea = GameObject.Find("PlayerArea");
         enemyAreaL = GameObject.Find("EnemyAreaL");
         enemyAreaR = GameObject.Find("EnemyAreaR");
-        dropZone = GameObject.Find("DropZone");
-
-
-        
+        dropZone = GameObject.Find("DropZone");        
 
     }
 
     //when the server starts, store Card1 and Card2 in the cards deck. Note that server-only methods require the [Server] attribute immediately preceding them!
     [Server]
     public override void OnStartServer()
-    {
-        
+    {        
 
-        controlCards.Add(controlCard);//todas las cartas
-        controlCards.Add(controlCard1);
-        controlCards.Add(controlCard2);
-        controlCards.Add(controlCard3);
-        controlCards.Add(controlCard4);
-
-
-
-        //  UpdateIdPlayers(netId);
+        controlCards.Add(controlCard);//todas las cartas    
         // cards.Sort();
 
         // int playerId = gameObject.GetInstanceID();
-
-        //  Debug.Log("Player ID en pm: " + playerId);
-
-        //if (isServer) //creo que es innecesaria esta comprobacion  ya que es [Server]
-        //{
-        // UpdateConectedPlayers();
-        // UpdateIdPlayers(playerId);   
-        //    SavePlayersGameObject(gameObject);//NO USADO , estudiar que el objeto no sea siempre el mismo
-        //}
-
-        // GameManager _gm = GameObject.Find("GameManager").GetComponent<GameManager>();
-        // Debug.Log("numero de jugadores en player manager: " + _gm.conectedPlayers);
-
-        // gameObject.tag = _gm.getTag(playerId);
-
 
         UpdateIdPlayers(netId);
 
     }
 
-    public void dealCards()
+    public void dealRiskCards()
     {
-        CmdDealCards(this.netId);
+        CmdDealRiskCards();
+    }
 
-        //Debug.Log("deal cards local player net" + NetworkClient.localPlayer.netId);
-        //Debug.Log("deal send player net" + netId);
+    [Command]
+    public void CmdDealRiskCards()
+    {
+
+        GameManager _gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+        //  _gm.playersId.ForEach(s => Debug.Log("id de jugador " + s));
+
+        int dealedRiskCardsNumber = _gm.riskCardsDealed;
+
+
+        if (dealedRiskCardsNumber < riskCards.Count)
+        {
+            GameObject riskCard = Instantiate(riskCards[dealedRiskCardsNumber], new Vector3(0, 0, 0), Quaternion.identity);
+            NetworkServer.Spawn(riskCard, connectionToClient);
+            RpcShowRiskCard(riskCard);
+
+            if (isServer)
+            {
+                UpdateRiskCardsDealed();
+            }
+        }
+        else
+        {
+            RpcLogToClients("cartas de riesgo agotadas!");
+        }
+
+
+
+    }
+    [ClientRpc]
+    void RpcShowRiskCard(GameObject riskCard)
+    {
+        riskCard.transform.SetParent(dropZone.transform, false);
+    }
+
+
+
+    [Server]
+    void UpdateRiskCardsDealed()
+    {
+        GameManager gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+        gm.UpdateRiskCardsDealed();
+
+        RpcLogToClients("Cartas de riesgo repartidas: " + gm.riskCardsDealed);
+
+    }
+
+
+    public void dealControlCards()
+    {
+        CmdDealControlCards(this.netId);
     }
 
     //Commands are methods requested by Clients to run on the Server, and require the [Command] attribute immediately preceding them. CmdDealCards() is called by the DrawCards script attached to the client Button
     [Command]
-    public void CmdDealCards(uint _netId)
+    public void CmdDealControlCards(uint _netId)
     {
-        //Debug.Log("local player net" + NetworkClient.localPlayer.netId);
-        //Debug.Log("send player net" + _netId);
-
         //Spawn a random card from the cards deck on the Server, assigning authority over it to the Client that requested the Command. Then run RpcShowCard() and indicate that this card was "Dealt"
         for (int i = 0; i < 1; i++)
         {
             GameManager _gm = GameObject.Find("GameManager").GetComponent<GameManager>();
           //  _gm.playersId.ForEach(s => Debug.Log("id de jugador " + s));
 
-            int playedCardsNumber = _gm.cardsDealed;
+            int dealedCardsNumber = _gm.cardsDealed;
             List<uint> playersIdList = _gm.playersId;
-           // List<int> playersId = _gm.playersId;
-
-            //  Debug.Log("Numero de jugadores: " + _gm.playersId.Count);
-            // List<string> strings = gm.playerIds.ConvertAll<string>(x => x.ToString());
-            // _gm.playersId.ForEach(s => Debug.Log("id de jugador " + s));
 
 
-            if (playedCardsNumber < controlCards.Count)
-            {
-                GameObject card = Instantiate(controlCards[playedCardsNumber], new Vector2(0, 0), Quaternion.identity);
-               // card.tag = connectionToClient.connectionId.ToString(); //solo se realiza en el servidor
-               // Debug.Log("connectionToClient: " + connectionToClient.connectionId);
+            // if (dealedCardsNumber < controlCards.Count)//TODO: utilizar este cuando esten todas las cartas
+            if (true)
+                {
+                // GameObject card = Instantiate(controlCards[playedCardsNumber], new Vector2(0, 0), Quaternion.identity); //TODO: utilizar este cuando esten todas las cartas
+                GameObject card = Instantiate(controlCards[0], new Vector2(0, 0), Quaternion.identity);
                 NetworkServer.Spawn(card, connectionToClient);
                 
                 RpcShowCard(card, "Dealt", _netId, playersIdList);
@@ -201,38 +212,7 @@ public class PlayerManager : NetworkBehaviour
     [ClientRpc]
     void RpcShowCard(GameObject card, string type, uint _cardNetId, List<uint> playersIdList)
     {
-
-        //  card.tag = _netId.ToString();
-
-
-
-
-        //Debug.Log("local player netid:" + NetworkClient.localPlayer.netId);
-        //Debug.Log("send player net" + _cardNetId);
-
-        //playersIdList.ForEach(s => Debug.Log("iduser" + s));
-
-
-
-
-
-        // int playersNumber = playersId.Count;
-
-        //Debug.Log(" card Tag: " + card.tag);
-        // Debug.Log(" player Tag: " + gameObject.tag);
-
-
-
-        //Debug.Log(" played _netId: " + _netId);
-        //Debug.Log("player netid: " + netId);
-        // Debug.Log("player conectionID: " + connectionToServer.connectionId);
-
-        //Debug.Log("card Tag: " + card.tag);
-        //  Debug.Log("card ID: " + card.GetInstanceID());
-
-        //Debug.Log("player Tag: " + gameObject.tag);
-
-        //if the card has been "Dealt," determine whether this Client has authority over it, and send it either to the PlayerArea or EnemyArea, accordingly. For the latter, flip it so the player can't see the front!
+       //if the card has been "Dealt," determine whether this Client has authority over it, and send it either to the PlayerArea or EnemyArea, accordingly. For the latter, flip it so the player can't see the front!
 
         uint _localUid = NetworkClient.localPlayer.netId;
         
@@ -241,62 +221,27 @@ public class PlayerManager : NetworkBehaviour
            
             if  (_localUid == _cardNetId)  
             {
-                //  Debug.Log("owned card Tag: " + card.tag);
-                //  Debug.Log("owned player Tag: " + gameObject.tag);
-
-
-
-                //  Debug.Log("isowned player netid: " + NetworkClient.localPlayer.netId);
-
+               
                 //card.transform.Rotate(0, 0, -90);
-                //card.gameObject.transform.localScale = new Vector3((float)0.7, (float)0.7, 0);
                 card.transform.localScale = new Vector3((float)1, (float)1, 1);
                 card.transform.SetParent(playerArea.transform, false);
-               // setEnemyCardParent(card);
 
             }
             else{
                 setEnemyCardParent(card, _cardNetId, playersIdList);
-                //Debug.Log("not owned card Tag: " + card.tag);
-                //Debug.Log("not owned player Tag: " + gameObject.tag);
-
-                // card.transform.SetParent(enemyAreaR.transform, false);
-
-                // setEnemyCardParent(card);     
+               
             }
 
 
-            //else if (playersNumber <= 2)
-            //{
-            //    card.transform.Rotate(0, 0, 90);
-            //    card.gameObject.transform.localScale = new Vector3((float)0.7, (float)0.7, 0);
-            //    //card.transform.Rotate(0, 0, 90);
-            //    card.transform.SetParent(enemyAreaR.transform, false);
-
-            //    // Debug.Log("rotacion: " + card.transform.rotation);
-
-            //    // card.GetComponent<CardFlipper>().Flip();
-            //}
-            //else
-            //{                
-
-            //    card.transform.Rotate(0, 0, -90);
-            //    card.gameObject.transform.localScale = new Vector3((float)0.7, (float)0.7, 0);
-            //    //card.transform.Rotate(0, 0, 90);
-            //    card.transform.SetParent(enemyAreaL.transform, false);
-            //}
         }
         //if the card has been "Played," send it to the DropZone. If this Client doesn't have authority over it, flip it so the player can now see the front!
         else if (type == "Played")
         {
-            card.transform.SetParent(dropZone.transform, false);
-
-
+           // card.transform.SetParent(dropZone.transform, false);
             NetworkServer.Destroy(card);
             if (!isOwned)
-            {
-                
-               // card.GetComponent<CardFlipper>().Flip(); //no es necesario ya que se destruye
+            {                
+               //TODO: aqui se podria manjear el puntaje
             }
         }
     }
@@ -304,12 +249,9 @@ public class PlayerManager : NetworkBehaviour
   
     void setEnemyCardParent(GameObject card, uint _cardNetId, List<uint> playersIdList)
     {
-        // Debug.Log("not owned card Tag: " + card.tag);
-        // Debug.Log("not owned player Tag: " + gameObject.tag);
-        playersIdList.ForEach(s => Debug.Log("iduser" + s));
-        Debug.Log("not Localplayer netid: " + NetworkClient.localPlayer.netId);
-        Debug.Log("card _netid: " + _cardNetId);
-        
+        //playersIdList.ForEach(s => Debug.Log("iduser" + s));
+        //Debug.Log("not Localplayer netid: " + NetworkClient.localPlayer.netId); 
+        //Debug.Log("card _netid: " + _cardNetId);        
 
         uint localUid = NetworkClient.localPlayer.netId;
 
@@ -335,22 +277,17 @@ public class PlayerManager : NetworkBehaviour
         }
 
         if(_cardNetId == leftUserId)
-        {
-            
+        {            
            // card.transform.Rotate(Vector3.forward, 90f);
             card.transform.SetParent(enemyAreaL.transform, false);
             card.GetComponent<CardFlipper>().Flip();
         }
         if (_cardNetId == rightUserId)
         {
-
            // card.transform.Rotate(Vector3.back, 90f);
-            card.transform.SetParent(enemyAreaR.transform, false);
-            
+            card.transform.SetParent(enemyAreaR.transform, false);            
             card.GetComponent<CardFlipper>().Flip();
         }
-
-
 
 
     }
@@ -374,13 +311,13 @@ public class PlayerManager : NetworkBehaviour
     [TargetRpc]
     void TargetSelfCard()
     {
-       // Debug.Log("Targeted by self!");
+        Debug.Log("Targeted by self!");
     }
 
     [TargetRpc]
     void TargetOtherCard(NetworkConnection target)
     {
-       // Debug.Log("Targeted by other!");
+        Debug.Log("Targeted by other!");
     }
 
     //CmdIncrementClick() is called by the IncrementClick script
