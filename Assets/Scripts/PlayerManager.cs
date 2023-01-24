@@ -241,15 +241,16 @@ public class PlayerManager : NetworkBehaviour
            
             if  (_localUid == _cardNetId)  
             {
-              //  Debug.Log("owned card Tag: " + card.tag);
-              //  Debug.Log("owned player Tag: " + gameObject.tag);
+                //  Debug.Log("owned card Tag: " + card.tag);
+                //  Debug.Log("owned player Tag: " + gameObject.tag);
 
-                
 
-              //  Debug.Log("isowned player netid: " + NetworkClient.localPlayer.netId);
+
+                //  Debug.Log("isowned player netid: " + NetworkClient.localPlayer.netId);
 
                 //card.transform.Rotate(0, 0, -90);
                 //card.gameObject.transform.localScale = new Vector3((float)0.7, (float)0.7, 0);
+                card.transform.localScale = new Vector3((float)1, (float)1, 1);
                 card.transform.SetParent(playerArea.transform, false);
                // setEnemyCardParent(card);
 
@@ -335,11 +336,18 @@ public class PlayerManager : NetworkBehaviour
 
         if(_cardNetId == leftUserId)
         {
+            
+           // card.transform.Rotate(Vector3.forward, 90f);
             card.transform.SetParent(enemyAreaL.transform, false);
+            card.GetComponent<CardFlipper>().Flip();
         }
         if (_cardNetId == rightUserId)
         {
+
+           // card.transform.Rotate(Vector3.back, 90f);
             card.transform.SetParent(enemyAreaR.transform, false);
+            
+            card.GetComponent<CardFlipper>().Flip();
         }
 
 

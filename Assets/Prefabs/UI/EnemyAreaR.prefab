@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4884521929336386886}
   - component: {fileID: 3326601095847276713}
   - component: {fileID: 8472873250364141870}
-  - component: {fileID: 87765351}
+  - component: {fileID: 1828601341}
   m_Layer: 3
   m_Name: EnemyAreaR
   m_TagString: Untagged
@@ -125,7 +125,7 @@ MonoBehaviour:
   compressRotation: 0
   positionPrecision: 0.01
   scalePrecision: 0.01
---- !u!114 &87765351
+--- !u!114 &1828601341
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -142,10 +142,10 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
-  m_StartCorner: 0
-  m_StartAxis: 0
-  m_CellSize: {x: 242, y: 165}
+  m_ChildAlignment: 4
+  m_StartCorner: 2
+  m_StartAxis: 1
+  m_CellSize: {x: 165, y: 242}
   m_Spacing: {x: 10, y: 10}
-  m_Constraint: 0
-  m_ConstraintCount: 2
+  m_Constraint: 2
+  m_ConstraintCount: 1

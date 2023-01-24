@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5824923013786008046}
   - component: {fileID: 6423838318194406273}
   - component: {fileID: -870911444886133761}
-  - component: {fileID: 2114046256}
+  - component: {fileID: 2114046257}
   m_Layer: 3
   m_Name: EnemyAreaL
   m_TagString: Untagged
@@ -125,7 +125,7 @@ MonoBehaviour:
   compressRotation: 0
   positionPrecision: 0.01
   scalePrecision: 0.01
---- !u!114 &2114046256
+--- !u!114 &2114046257
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -134,20 +134,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 5824923013786008044}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
     m_Left: 0
-    m_Right: 20
-    m_Top: -45
+    m_Right: 0
+    m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 2
-  m_Spacing: -120
-  m_ChildForceExpandWidth: 0
-  m_ChildForceExpandHeight: 0
-  m_ChildControlWidth: 0
-  m_ChildControlHeight: 0
-  m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
-  m_ReverseArrangement: 0
+  m_ChildAlignment: 4
+  m_StartCorner: 2
+  m_StartAxis: 1
+  m_CellSize: {x: 165, y: 242}
+  m_Spacing: {x: 10, y: 10}
+  m_Constraint: 2
+  m_ConstraintCount: 1
