@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class IncrementClick : NetworkBehaviour
 {
-    public PlayerManager PlayerManager;
+    public PlayerManager playerManager;
 
     //SyncVar declaration requires the [SyncVar] attribute immediately preceding it!
     [SyncVar]
@@ -16,7 +16,7 @@ public class IncrementClick : NetworkBehaviour
     {
         //locate the PlayerManager within this client and request the server to run CmdIncrementClick(), passing in this gameobject
         NetworkIdentity networkIdentity = NetworkClient.connection.identity;
-        PlayerManager = networkIdentity.GetComponent<PlayerManager>();
-        PlayerManager.CmdIncrementClick(gameObject);
+        playerManager = networkIdentity.GetComponent<PlayerManager>();
+        playerManager.CmdIncrementClick(gameObject);
     }
 }

@@ -13,7 +13,9 @@ public class DrawCards : NetworkBehaviour
         //locate the PlayerManager in this Client and request the Server to deal cards
         NetworkIdentity networkIdentity = NetworkClient.connection.identity;
         PlayerManager = networkIdentity.GetComponent<PlayerManager>();
-        PlayerManager.CmdDealCards();
+       // Debug.Log(netId);
+       // Debug.Log(networkIdentity.netId);
+        PlayerManager.dealCards();
     }
 
 }

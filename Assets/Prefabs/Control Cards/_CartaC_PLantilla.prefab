@@ -165,7 +165,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
-  PlayerManager: {fileID: 0}
+  playerManager: {fileID: 0}
   NumberOfClicks: 0
 --- !u!114 &5131143479334348433
 MonoBehaviour:

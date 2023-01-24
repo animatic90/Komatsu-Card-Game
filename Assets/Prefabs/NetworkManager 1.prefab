@@ -1,0 +1,114 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2830538879539706144
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2830538879539706204}
+  - component: {fileID: 2830538879539706205}
+  - component: {fileID: 2830538879539706206}
+  - component: {fileID: 2830538879539706207}
+  m_Layer: 0
+  m_Name: NetworkManager 1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2830538879539706204
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2830538879539706144}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 60.232388, y: 233.56499, z: -0.63799566}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2830538879539706205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2830538879539706144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f2522147d698d84dad434be34a85501, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dontDestroyOnLoad: 1
+  runInBackground: 1
+  autoStartServerBuild: 1
+  autoConnectClientBuild: 0
+  sendRate: 30
+  offlineScene: 
+  onlineScene: 
+  transport: {fileID: 2830538879539706206}
+  networkAddress: localhost
+  maxConnections: 6
+  authenticator: {fileID: 0}
+  playerPrefab: {fileID: 737733039919106138, guid: 99554663a4e7e0c4e91845784a81323b, type: 3}
+  autoCreatePlayer: 1
+  playerSpawnMethod: 0
+  spawnPrefabs:
+  - {fileID: 8966511548558874660, guid: a54680e4da5e85d4fb0ac84d99e06e18, type: 3}
+  - {fileID: 3883996459800943445, guid: 7da465969f827154f9c1c3f58470dfdb, type: 3}
+  - {fileID: 2795891094133970418, guid: d62ce3d67e9ba3b49abc77c34aab73b4, type: 3}
+  - {fileID: 5824923013786008044, guid: 42b558aa26b71614da450ffab04d633d, type: 3}
+  - {fileID: 4884521929336386888, guid: 992f554a7fd4cc242a2962bb05305ac8, type: 3}
+  - {fileID: 7480432256901380483, guid: 7ae716a94042da44e8be41732ff42806, type: 3}
+  - {fileID: 5131143479334348397, guid: 410b1687efdab9a449afdaa208ba595e, type: 3}
+  - {fileID: 5131143479334348397, guid: dca2bf4b215b5e844951c2caf7344e95, type: 3}
+  - {fileID: 5131143479334348397, guid: d3a5d68ecf0fe654c999b947187a17dc, type: 3}
+  - {fileID: 5131143479334348397, guid: fb3ae2c8341517341b1e3c17c78bedec, type: 3}
+  - {fileID: 5131143479334348397, guid: 5938b0289ee4d3a40bafa4932b30a845, type: 3}
+  - {fileID: 709316057296907687, guid: 0331f1eb3317793449f81d5cd440866f, type: 3}
+  timeInterpolationGui: 0
+--- !u!114 &2830538879539706206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2830538879539706144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7424c1070fad4ba2a7a96b02fbeb4bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  port: 7777
+  NoDelay: 1
+  SendTimeout: 5000
+  ReceiveTimeout: 30000
+  serverMaxMessageSize: 16384
+  serverMaxReceivesPerTick: 10000
+  serverSendQueueLimitPerConnection: 10000
+  serverReceiveQueueLimitPerConnection: 10000
+  clientMaxMessageSize: 16384
+  clientMaxReceivesPerTick: 1000
+  clientSendQueueLimit: 10000
+  clientReceiveQueueLimit: 10000
+--- !u!114 &2830538879539706207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2830538879539706144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6442dc8070ceb41f094e44de0bf87274, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offsetX: 0
+  offsetY: 0
