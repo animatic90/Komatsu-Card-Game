@@ -13,15 +13,28 @@ public class CustomNetworkManager : NetworkManager
     {
         base.OnServerAddPlayer(conn);
 
-       // NetworkIdentity test = conn.identity;
-        Debug.Log("numero de players en cnm: " + numPlayers);
+        //Debug.Log("numero de players en cnm: " + numPlayers);
 
-        GameManager gm = GameObject.Find("GameManager").GetComponent<GameManager>();
-        gm.UpdateConectedPlayers(numPlayers);
+        //GameManager gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+        //gm.UpdateConectedPlayers(numPlayers);
 
-       // Debug.Log("numero de players en gm: " + gm.conectedPlayers);
-        //   PlayerManager pm = conn.identity.GetComponent<PlayerManager>();
-      
+
+
+       // GameObject player = Instantiate(playerPrefab);
+        //NetworkServer.AddPlayerForConnection(conn, player);
+
+        // Llenar el array de jugadores en el GameManager
+       // PlayerManager playerManager = player.GetComponent<PlayerManager>();
+
+        PlayerManager playerManager = conn.identity.GetComponent<PlayerManager>();
+        if (numPlayers == 1)
+        {   
+            playerManager.isPlayerTurn = true;
+        }
+        GameManager.Instance.AddPlayer(playerManager);
+
+        GameManager.Instance.UpdateConectedPlayers(numPlayers);
+
     }
-  
+
 }

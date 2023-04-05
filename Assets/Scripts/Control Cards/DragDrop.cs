@@ -6,8 +6,8 @@ using UnityEngine;
 public class DragDrop : NetworkBehaviour
 {
     //Canvas is assigned locally at runtime in Start(), whereas the rest are assigned contextually as this gameobject is dragged and dropped
-    public GameObject Canvas;
-    public PlayerManager PlayerManager;
+    public GameObject canvas;
+    public PlayerManager playerManager;
 
     private bool _isDragging = false;
     private bool _isOverDropZone = false;
@@ -18,7 +18,7 @@ public class DragDrop : NetworkBehaviour
 
     private void Start()
     {
-        Canvas = GameObject.Find("Main Canvas");
+        canvas = GameObject.Find("Main Canvas");
 
         //check whether this client hasAuthority to manipulate this gameobject
         if (!isOwned)
@@ -32,7 +32,7 @@ public class DragDrop : NetworkBehaviour
         if (_isDragging)
         {
             transform.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-            transform.SetParent(Canvas.transform, true);
+            transform.SetParent(canvas.transform, true);
         }
     }
 
@@ -54,6 +54,11 @@ public class DragDrop : NetworkBehaviour
     //StartDrag() is called by the Begin Drag event in the Event Trigger component attached to this gameobject
     public void StartDrag()
     {
+        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
+        playerManager = networkIdentity.GetComponent<PlayerManager>();
+
+        if (!playerManager.isPlayerTurn) return;
+
         //if the gameobject is draggable, store the parent and position of it so we know where to return it if it isn't put in a dropzone
         if (!_isDraggable) return;
         _startParent = transform.parent.gameObject;
@@ -67,14 +72,16 @@ public class DragDrop : NetworkBehaviour
         if (!_isDraggable) return;
         _isDragging = false;
 
-        //if the gameobject is put in a dropzone, set it as a child of the dropzone and access the PlayerManager of this client to let the server know a card has been played
+      
+        //if the gameobject is put in a dropzone, set it as a child of the dropzone and access the PlayerManager of this client to let the server know a card has been played 
+
         if (_isOverDropZone)
         {
             //transform.SetParent(_collisionCard.transform, false);
             _isDraggable = false;
-            NetworkIdentity networkIdentity = NetworkClient.connection.identity;
-            PlayerManager = networkIdentity.GetComponent<PlayerManager>();
-            PlayerManager.PlayCard(gameObject);
+           // NetworkIdentity networkIdentity = NetworkClient.connection.identity;
+           // PlayerManager = networkIdentity.GetComponent<PlayerManager>();
+            playerManager.PlayCard(gameObject);
         }
         //otherwise, send it back from whence it came
         else

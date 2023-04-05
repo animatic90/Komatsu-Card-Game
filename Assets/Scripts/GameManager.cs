@@ -9,10 +9,83 @@ public class GameManager : NetworkBehaviour
     public int cardsDealed = 0;
     public int riskCardsDealed = 0;
     public int cardsPlayed = 0;
-    //public int conectedPlayers = -1; //-1 si hay server dedicado , 0 si es client y host
     public int conectedPlayers; //ahora lo traemos desde el CustomNetworkManager
     public List<uint> playersId = new List<uint>();
-    
+
+
+    private static GameManager instance;
+
+    public static GameManager Instance
+    {
+        get { return instance; }
+    }
+
+    void Awake()
+    {
+        // Verificar si ya existe una instancia, en cuyo caso destruir este objeto
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
+
+    #region Turn Manager
+    public List<PlayerManager> players = new List<PlayerManager>();
+    public int currentPlayerIndex = 0;
+
+    public void AddPlayer(PlayerManager player)
+    {
+        players.Add(player);
+    }
+
+    public void RemovePlayer(PlayerManager player)
+    {
+        players.Remove(player);
+    }
+
+    //public void SetPlayerTurn(PlayerManager player)
+    //{
+    //    foreach (PlayerManager p in players)
+    //    {
+    //        p.isPlayerTurn = (p == player);
+    //    }
+    //}
+
+    public void SetPlayerTurn(PlayerManager currentPlayer, bool isTurn)
+    {
+        foreach (PlayerManager player in players)
+        {
+            player.isPlayerTurn = (player == currentPlayer) ? isTurn : false;
+        }
+    }
+
+    public void EndTurn(PlayerManager currentPlayer, bool isTurn)
+    {
+
+        if (isTurn)
+        {
+            // El jugador actual aún tenía el turno, así que lo marcamos como finalizado
+            currentPlayer.isPlayerTurn = false;
+
+            if (++currentPlayerIndex >= players.Count)
+            {
+                currentPlayerIndex = 0;
+            }
+            SetPlayerTurn(players[currentPlayerIndex], isTurn);
+        }
+
+
+
+    }
+    #endregion
+
+
+
     public void UpdateConectedPlayers(int numPlayers)
     {
         //conectedPlayers++;

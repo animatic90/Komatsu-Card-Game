@@ -19,6 +19,20 @@ public class PlayerManager : NetworkBehaviour
     //the cards List represents our deck of cards
     List<GameObject> controlCards = new List<GameObject>();
 
+
+    [SyncVar(hook = nameof(OnPlayerNameChanged))]
+    public string playerName;
+
+    [SyncVar(hook = nameof(OnPlayerTurnChanged))]
+    public bool isPlayerTurn;
+
+    private GameManager gameManager;
+
+    private void Start()
+    {
+        gameManager = GameManager.Instance;
+    }
+
     public override void OnStartClient()
     {
         base.OnStartClient();
@@ -44,8 +58,54 @@ public class PlayerManager : NetworkBehaviour
 
     }
 
+    public override void OnStopServer()
+    {
+        gameManager.RemovePlayer(this);
+    }
+
+
+
+    #region Turn Manager
+    private void OnPlayerNameChanged(string oldValue, string newValue)
+    {
+        Debug.Log($"Player name changed from {oldValue} to {newValue}");
+    }
+
+    private void OnPlayerTurnChanged(bool oldValue, bool newValue)
+    {
+        Debug.Log($"{playerName}'s turn changed to {newValue}");
+    }
+
+    //public void EndTurn()
+    //{
+    //    if (isPlayerTurn)
+    //    {
+    //        gameManager.EndTurn();
+    //    }
+    //}
+
+    public void EndTurn()
+    {
+        if (!isLocalPlayer)
+            return;
+
+        CmdEndTurn();
+    }
+
+    [Command]
+    private void CmdEndTurn()
+    {
+        gameManager.EndTurn( this,isPlayerTurn);
+    }
+    #endregion
+
+
+
+
+
     public void dealRiskCards()
     {
+        if (!isPlayerTurn) return;
         CmdDealRiskCards();
     }
 
@@ -99,6 +159,9 @@ public class PlayerManager : NetworkBehaviour
 
     public void dealControlCards()
     {
+
+        if (!isPlayerTurn) return;
+  
         CmdDealControlCards(this.netId);
     }
 
@@ -135,7 +198,7 @@ public class PlayerManager : NetworkBehaviour
             }
             else
             {
-                RpcLogToClients("cartas de control agotadas!");
+               // RpcLogToClients("cartas de control agotadas!");
             }
 
             
