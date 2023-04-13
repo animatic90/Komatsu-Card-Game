@@ -170,7 +170,7 @@ public class PlayerManager : NetworkBehaviour
     public void CmdDealControlCards(uint _netId)
     {
         //Spawn a random card from the cards deck on the Server, assigning authority over it to the Client that requested the Command. Then run RpcShowCard() and indicate that this card was "Dealt"
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 1; i++)
         {
             GameManager _gm = GameObject.Find("GameManager").GetComponent<GameManager>();
           //  _gm.playersId.ForEach(s => Debug.Log("id de jugador " + s));
