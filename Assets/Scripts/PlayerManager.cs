@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 public class PlayerManager : NetworkBehaviour
 {
     //Card1 and Card2 are located in the inspector, whereas PlayerArea, EnemyArea, and DropZone are located at runtime within OnStartClient()    
-    public GameObject controlCard;
+    //public GameObject controlCard;
     public GameObject playerArea;
     public GameObject enemyAreaL;
     public GameObject enemyAreaR;
@@ -17,7 +17,7 @@ public class PlayerManager : NetworkBehaviour
 
     public List<GameObject> riskCards = new List<GameObject>();
     //the cards List represents our deck of cards
-    List<GameObject> controlCards = new List<GameObject>();
+    public List<GameObject> controlCards = new List<GameObject>();
 
 
     [SyncVar(hook = nameof(OnPlayerNameChanged))]
@@ -49,7 +49,7 @@ public class PlayerManager : NetworkBehaviour
     public override void OnStartServer()
     {        
 
-        controlCards.Add(controlCard);//todas las cartas    
+       // controlCards.Add(controlCard);//todas las cartas    
         // cards.Sort();
 
         // int playerId = gameObject.GetInstanceID();
@@ -170,7 +170,7 @@ public class PlayerManager : NetworkBehaviour
     public void CmdDealControlCards(uint _netId)
     {
         //Spawn a random card from the cards deck on the Server, assigning authority over it to the Client that requested the Command. Then run RpcShowCard() and indicate that this card was "Dealt"
-        for (int i = 0; i < 1; i++)
+        for (int i = 0; i < 5; i++)
         {
             GameManager _gm = GameObject.Find("GameManager").GetComponent<GameManager>();
           //  _gm.playersId.ForEach(s => Debug.Log("id de jugador " + s));
@@ -179,14 +179,14 @@ public class PlayerManager : NetworkBehaviour
             List<uint> playersIdList = _gm.playersId;
 
 
-            // if (dealedCardsNumber < controlCards.Count)//TODO: utilizar este cuando esten todas las cartas
-            if (true)
+             if (dealedCardsNumber < controlCards.Count)//TODO: utilizar este cuando esten todas las cartas
+            //if (true)
                 {
-                // GameObject card = Instantiate(controlCards[playedCardsNumber], new Vector2(0, 0), Quaternion.identity); //TODO: utilizar este cuando esten todas las cartas
-                GameObject card = Instantiate(controlCards[0], new Vector2(0, 0), Quaternion.identity);
-                NetworkServer.Spawn(card, connectionToClient);
+                    GameObject card = Instantiate(controlCards[dealedCardsNumber], new Vector2(0, 0), Quaternion.identity); //TODO: utilizar este cuando esten todas las cartas
+                    //GameObject card = Instantiate(controlCards[0], new Vector2(0, 0), Quaternion.identity);
+                    NetworkServer.Spawn(card, connectionToClient);
                 
-                RpcShowCard(card, "Dealt", _netId, playersIdList);
+                    RpcShowCard(card, "Dealt", _netId, playersIdList);
                
 
                  
