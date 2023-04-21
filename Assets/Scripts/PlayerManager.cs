@@ -14,7 +14,7 @@ public class PlayerManager : NetworkBehaviour
     public GameObject enemyAreaL;
     public GameObject enemyAreaR;
     public GameObject dropZone;
-
+ 
     public List<GameObject> riskCards = new List<GameObject>();
     //the cards List represents our deck of cards
     public List<GameObject> controlCards = new List<GameObject>();
@@ -30,7 +30,7 @@ public class PlayerManager : NetworkBehaviour
 
     private void Start()
     {
-        gameManager = GameManager.Instance;
+        gameManager = GameManager.Instance;        
     }
 
     public override void OnStartClient()
@@ -40,7 +40,7 @@ public class PlayerManager : NetworkBehaviour
         playerArea = GameObject.Find("PlayerArea");
         enemyAreaL = GameObject.Find("EnemyAreaL");
         enemyAreaR = GameObject.Find("EnemyAreaR");
-        dropZone = GameObject.Find("DropZone");        
+        dropZone = GameObject.Find("DropZone");
 
     }
 
@@ -397,4 +397,103 @@ public class PlayerManager : NetworkBehaviour
         card.GetComponent<IncrementClick>().NumberOfClicks++;
        // Debug.Log("This card has been clicked " + card.GetComponent<IncrementClick>().NumberOfClicks + " times!");
     }
+    
+    public void EndTurn_GameManager()
+    {
+        CmdEndTurnGameManagerCon(this);
+        Debug.Log("PlayerManager - EndTurn_GameManager - Se presionó el botón cambiar");
+    }
+
+    [Command]
+    public void CmdEndTurnGameManagerCon(PlayerManager currentPlayer)
+    {
+        Debug.Log("PlayerManager - Se presionó el botón cambiar");
+
+        //GameManager gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+        //gm.EndTurn();
+        //GameManager.Instance.EndTurn();
+        Asignarturno(currentPlayer);
+    }
+
+    [Server]
+    public void Asignarturno(PlayerManager currentPlayer)
+    {
+        if (currentPlayer.isPlayerTurn == true)
+        {
+            //Bandera para definir el nextPlayer  
+            bool NextPlayerTurn = false;
+            //Obtenemos allPlayers
+            PlayerManager[] allPlayers = FindObjectsOfType<PlayerManager>();
+            Array.Reverse(allPlayers);
+
+            Debug.Log("Antes -> Config de los Players: " + "Primero: " + allPlayers[0].isPlayerTurn + " Segundo: " + allPlayers[1].isPlayerTurn);
+
+            //Obtenemos currentPlayer
+            //NetworkIdentity networkIdentity = NetworkClient.connection.identity;
+            //currentPlayer = networkIdentity.GetComponent<PlayerManager>();
+            //Definimos nextPlayer en true y los demás en false
+
+            for (int i = 0; i < allPlayers.Length; i++)
+            {
+                if (allPlayers[i] == currentPlayer)
+                {
+                    NextPlayerTurn = true;
+                    allPlayers[i].isPlayerTurn = false; //currentPlayer
+                }
+                else
+                {
+                    NextPlayerTurn = false;
+                }
+
+                if (i == (allPlayers.Length - 1))
+                {
+                    allPlayers[0].isPlayerTurn = NextPlayerTurn;
+                }
+                else
+                {
+                    allPlayers[i + 1].isPlayerTurn = NextPlayerTurn;
+                }
+            }
+            //Mostraremos el log solo para dos jugadores
+            Debug.Log("Después -> Config de los Players: " + "Primero: " + allPlayers[0].isPlayerTurn + " Segundo: " + allPlayers[1].isPlayerTurn);
+
+            EnviarTurnoATodosLosJugadores(allPlayers);
+        }
+ 
+    }
+
+    //[ClientRpc]
+    //public void EnviarTurnoATodosLosJugadores(PlayerManager[] allPlayers)
+    //{
+
+    //    //        AsignarTurnoALosJugadoresLocalmente(allPlayers);
+    //    PlayerManager[] allLocalPlayers = FindObjectsOfType<PlayerManager>();
+    //    Array.Reverse(allLocalPlayers);
+    //    //foreach (var player in allPlayers)
+    //    for (int i = 0; i < allPlayers.Length; i++)
+    //    {
+    //        allLocalPlayers[i] = allPlayers[i];
+    //    }
+    //}
+
+    [ClientRpc]
+
+    public void EnviarTurnoATodosLosJugadores(PlayerManager[] allPlayers)
+    {
+        foreach (var player in allPlayers)
+        {
+            if (player.isPlayerTurn == true)
+            {
+                if (player.netId == this.netId)
+                {
+                    this.isPlayerTurn = true;
+                }
+            }
+            else
+            {
+                this.isPlayerTurn = false;
+            }
+        }
+    }
+
 }

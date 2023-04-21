@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -441,6 +441,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &782628378 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2830538879539706205, guid: b5fbccf8b6049e44a8a07d2ac01426b9, type: 3}
+  m_PrefabInstance: {fileID: 2130196747}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f2522147d698d84dad434be34a85501, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &893064931
 GameObject:
   m_ObjectHideFlags: 0
@@ -1448,6 +1459,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: BtnPassTurn
       objectReference: {fileID: 0}
+    - target: {fileID: 3669054341400923586, guid: db51d57564e64c14e936f6cbe153b919, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5299110241914010904}
+    - target: {fileID: 3669054341400923586, guid: db51d57564e64c14e936f6cbe153b919, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: EndTurn
+      objectReference: {fileID: 0}
+    - target: {fileID: 3669054341400923586, guid: db51d57564e64c14e936f6cbe153b919, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PassTurn, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4112157294786227099, guid: db51d57564e64c14e936f6cbe153b919, type: 3}
+      propertyPath: nm
+      value: 
+      objectReference: {fileID: 782628378}
     - target: {fileID: 5686819767835735658, guid: db51d57564e64c14e936f6cbe153b919, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1537,6 +1564,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db51d57564e64c14e936f6cbe153b919, type: 3}
+--- !u!114 &5299110241914010904 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4112157294786227099, guid: db51d57564e64c14e936f6cbe153b919, type: 3}
+  m_PrefabInstance: {fileID: 5299110241914010903}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8459d596c7140143a49b5c850c00c39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7011637392701592221
 PrefabInstance:
   m_ObjectHideFlags: 0

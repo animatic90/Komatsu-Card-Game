@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PassTurn : MonoBehaviour
+public class PassTurn : NetworkBehaviour
 {
 
     public PlayerManager currentPlayer;
@@ -18,16 +18,33 @@ public class PassTurn : MonoBehaviour
     {
         
     }
-
+      
     public void OnClick()
     {
+        //PlayerManager[] allPlayers = FindObjectsOfType<PlayerManager>();
 
+        //NetworkIdentity networkIdentity = NetworkClient.connection.identity;
+        //currentPlayer = networkIdentity.GetComponent<PlayerManager>(); //datos de quien hizo click en el botón
+
+        //bool isTurn = currentPlayer.isPlayerTurn;
+        //GameManager.Instance.EndTurn(currentPlayer, isTurn);
+
+        EndTurn();
+
+        //GameManager.Instance.EndTurn();
+        //Debug.Log("Se presionó el botón cambiar");
+        // FindObjectOfType<PlayerManager>().EndTurn();
+    }
+ 
+    public void EndTurn()
+    {
         NetworkIdentity networkIdentity = NetworkClient.connection.identity;
         currentPlayer = networkIdentity.GetComponent<PlayerManager>();
 
-        bool isTurn = currentPlayer.isPlayerTurn;
-        GameManager.Instance.EndTurn(currentPlayer, isTurn);
+        //GameManager.Instance.EndTurn();
+        currentPlayer.EndTurn_GameManager();
+        Debug.Log("PassTurn - Se presionó el botón cambiar");
 
-        // FindObjectOfType<PlayerManager>().EndTurn();
     }
+
 }
