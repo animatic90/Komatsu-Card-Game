@@ -1,6 +1,7 @@
 using Mirror;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class DragDrop : NetworkBehaviour
@@ -36,12 +37,44 @@ public class DragDrop : NetworkBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    public string RemoveAfter(string value, string character)
     {
-        //in our scene, if this gameobject collides with something, it must be the dropzone, as specified in the layer collision matrix (cards are part of the "Cards" layer and the dropzone is part of the "DropZone" layer)
-        _isOverDropZone = true;
-        _collisionCard = collision.gameObject;
-       // Debug.Log("is enter");
+        int index = value.IndexOf(character);
+        if (index > 0)
+        {
+            value = value.Substring(0, index);
+        }
+        return value;
+    }
+
+    public string RemoveBefore(string value, string character)
+    {
+        int index = value.IndexOf(character);
+        if (index > 0)
+        {
+            value = value.Substring(index + 1);
+        }
+        return value;
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        string tipoCartaThis = RemoveBefore(RemoveAfter(this.tag, "_"), "a"); //C o R
+        string tipoCartaOther = RemoveBefore(RemoveAfter(other.gameObject.tag, "_"), "a"); //C o R
+
+        string numeroCartaThis = RemoveBefore(this.tag, "_");
+        string numeroCartaOther = RemoveBefore(other.gameObject.tag, "_");
+
+        if (tipoCartaOther != tipoCartaThis)
+        {
+            if (numeroCartaThis == numeroCartaOther)
+            {
+                //in our scene, if this gameobject collides with something, it must be the dropzone, as specified in the layer collision matrix (cards are part of the "Cards" layer and the dropzone is part of the "DropZone" layer)
+                _isOverDropZone = true;
+                _collisionCard = other.gameObject;
+                // Debug.Log("is enter");
+            }
+        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)

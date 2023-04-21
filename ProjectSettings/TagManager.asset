@@ -14,6 +14,28 @@ TagManager:
   - 4
   - 5
   - 6
+  - CartaR_1
+  - CartaR_2
+  - CartaR_3
+  - CartaR_4
+  - CartaR_5
+  - CartaR_6
+  - CartaR_7
+  - CartaR_8
+  - CartaR_9
+  - CartaR_10
+  - CartaR_11
+  - CartaC_1
+  - CartaC_2
+  - CartaC_3
+  - CartaC_4
+  - CartaC_5
+  - CartaC_6
+  - CartaC_7
+  - CartaC_8
+  - CartaC_9
+  - CartaC_10
+  - CartaC_11
   layers:
   - Default
   - TransparentFX

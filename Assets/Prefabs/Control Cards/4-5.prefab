@@ -94,7 +94,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5131143479334348397, guid: 410b1687efdab9a449afdaa208ba595e, type: 3}
       propertyPath: m_Name
-      value: _CartaC_PLantilla
+      value: 4-5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5131143479334348397, guid: 410b1687efdab9a449afdaa208ba595e, type: 3}
+      propertyPath: m_TagString
+      value: CartaC_4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8421055110606443364, guid: 410b1687efdab9a449afdaa208ba595e, type: 3}
+      propertyPath: _assetId
+      value: 2055452057
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

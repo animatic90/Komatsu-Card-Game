@@ -96,6 +96,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: 1-7
       objectReference: {fileID: 0}
+    - target: {fileID: 5131143479334348397, guid: 410b1687efdab9a449afdaa208ba595e, type: 3}
+      propertyPath: m_TagString
+      value: CartaC_1
+      objectReference: {fileID: 0}
     - target: {fileID: 5131143479334348435, guid: 410b1687efdab9a449afdaa208ba595e, type: 3}
       propertyPath: m_Sprite
       value: 
