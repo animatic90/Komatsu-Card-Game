@@ -84,50 +84,6 @@ public class GameManager : NetworkBehaviour
             SetPlayerTurn(players[currentPlayerIndex], isTurn);
         }
     }
-
-    //Aquí solo se llega cuando se va a pasar al sgte jugador
-    //Es decir, cuando por lo menos ya hubo un jugador
-    public void EndTurn()
-    {
-        //Bandera para definir el nextPlayer  
-        bool NextPlayerTurn = false; 
-        //Obtenemos allPlayers
-        PlayerManager[] allPlayers = FindObjectsOfType<PlayerManager>();
-        Array.Reverse(allPlayers);
-
-        Debug.Log("Antes -> Config de los Players: " + "Primero: " + allPlayers[0].isPlayerTurn + " Segundo: " + allPlayers[1].isPlayerTurn);
-
-        //Obtenemos currentPlayer
-        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
-        currentPlayer = networkIdentity.GetComponent<PlayerManager>();
-        //Definimos nextPlayer en true y los demás en false
-
-        for (int i = 0; i < allPlayers.Length; i++)
-        {
-            if (allPlayers[i] == currentPlayer)
-            {
-                NextPlayerTurn = true;
-                allPlayers[i].isPlayerTurn = false; //currentPlayer
-            }
-            else
-            {
-                NextPlayerTurn = false;
-            }
-
-            if (i == (allPlayers.Length - 1))
-            {
-                allPlayers[0].isPlayerTurn = NextPlayerTurn;
-            }
-            else
-            {
-                allPlayers[i+1].isPlayerTurn = NextPlayerTurn;
-            }
-        }
-        //Mostraremos el log solo para dos jugadores
-        Debug.Log("Después -> Config de los Players: "+"Primero: "+ allPlayers[0].isPlayerTurn + " Segundo: " + allPlayers[1].isPlayerTurn);
-    
-    }
-
     #endregion
 
 

@@ -59,8 +59,8 @@ public class DragDrop : NetworkBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        string tipoCartaThis = RemoveBefore(RemoveAfter(this.tag, "_"), "a"); //C o R
-        string tipoCartaOther = RemoveBefore(RemoveAfter(other.gameObject.tag, "_"), "a"); //C o R
+        string tipoCartaThis = RemoveAfter(this.tag, "_"); //C o R
+        string tipoCartaOther = RemoveAfter(other.gameObject.tag, "_"); //C o R
 
         string numeroCartaThis = RemoveBefore(this.tag, "_");
         string numeroCartaOther = RemoveBefore(other.gameObject.tag, "_");
@@ -103,6 +103,7 @@ public class DragDrop : NetworkBehaviour
     public void EndDrag()
     {
         if (!_isDraggable) return;
+        if (!playerManager.isPlayerTurn) return;
         _isDragging = false;
 
       

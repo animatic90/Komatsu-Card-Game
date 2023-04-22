@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5131143479334348396}
   - component: {fileID: 5131143479334348434}
   - component: {fileID: 5131143479334348435}
-  - component: {fileID: 5131143479334348432}
+  - component: {fileID: -8514238606872696002}
   - component: {fileID: -5933677981560704051}
   - component: {fileID: 559196627374199075}
   - component: {fileID: 2773346651644987005}
@@ -41,7 +41,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -86,7 +86,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5131143479334348432
+--- !u!114 &-8514238606872696002
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -184,7 +184,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 5131143479334348432}
+        - m_Target: {fileID: -8514238606872696002}
           m_TargetAssemblyTypeName: DragDrop, Assembly-CSharp
           m_MethodName: StartDrag
           m_Mode: 1
@@ -212,7 +212,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 5131143479334348432}
+        - m_Target: {fileID: -8514238606872696002}
           m_TargetAssemblyTypeName: DragDrop, Assembly-CSharp
           m_MethodName: EndDrag
           m_Mode: 1
