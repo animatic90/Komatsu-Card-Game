@@ -10,15 +10,17 @@ public class CardFlipper : MonoBehaviour
 
     public void Flip()
     {
-        Sprite currentSprite = gameObject.GetComponent<Image>().sprite;
+        gameObject.GetComponent<Image>().sprite = cardBack;
 
-        if (currentSprite == cardFront)
-        {
-            gameObject.GetComponent<Image>().sprite = cardBack;
-        }
-        else
-        {
-            gameObject.GetComponent<Image>().sprite = cardFront;
-        }
+        //Sprite currentSprite = gameObject.GetComponent<Image>().sprite;
+
+        //if (currentSprite == cardFront)
+        //{
+        //    gameObject.GetComponent<Image>().sprite = cardBack;
+        //}
+        //else
+        //{
+        //    gameObject.GetComponent<Image>().sprite = cardFront;
+        //}
     }
 }
