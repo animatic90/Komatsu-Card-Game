@@ -14,7 +14,7 @@ public class PlayerManager : NetworkBehaviour
     public GameObject enemyAreaL;
     public GameObject enemyAreaR;
     public GameObject dropZone;
- 
+
     public List<GameObject> riskCards = new List<GameObject>();
     //the cards List represents our deck of cards
     public List<GameObject> controlCards = new List<GameObject>();
@@ -30,7 +30,7 @@ public class PlayerManager : NetworkBehaviour
 
     private void Start()
     {
-        gameManager = GameManager.Instance;        
+        gameManager = GameManager.Instance;
     }
 
     public override void OnStartClient()
@@ -47,9 +47,9 @@ public class PlayerManager : NetworkBehaviour
     //when the server starts, store Card1 and Card2 in the cards deck. Note that server-only methods require the [Server] attribute immediately preceding them!
     [Server]
     public override void OnStartServer()
-    {        
+    {
 
-       // controlCards.Add(controlCard);//todas las cartas    
+        // controlCards.Add(controlCard);//todas las cartas    
         // cards.Sort();
 
         // int playerId = gameObject.GetInstanceID();
@@ -95,7 +95,7 @@ public class PlayerManager : NetworkBehaviour
     [Command]
     private void CmdEndTurn()
     {
-        gameManager.EndTurn( this,isPlayerTurn);
+        gameManager.EndTurn(this, isPlayerTurn);
     }
     #endregion
 
@@ -161,7 +161,7 @@ public class PlayerManager : NetworkBehaviour
     {
 
         if (!isPlayerTurn) return;
-  
+
         CmdDealControlCards(this.netId);
     }
 
@@ -173,35 +173,35 @@ public class PlayerManager : NetworkBehaviour
         for (int i = 0; i < 1; i++)
         {
             GameManager _gm = GameObject.Find("GameManager").GetComponent<GameManager>();
-          //  _gm.playersId.ForEach(s => Debug.Log("id de jugador " + s));
+            //  _gm.playersId.ForEach(s => Debug.Log("id de jugador " + s));
 
             int dealedCardsNumber = _gm.cardsDealed;
             List<uint> playersIdList = _gm.playersId;
 
 
-             if (dealedCardsNumber < controlCards.Count)//TODO: utilizar este cuando esten todas las cartas
-            //if (true)
-                {
-                    GameObject card = Instantiate(controlCards[dealedCardsNumber], new Vector2(0, 0), Quaternion.identity); //TODO: utilizar este cuando esten todas las cartas
-                    //GameObject card = Instantiate(controlCards[0], new Vector2(0, 0), Quaternion.identity);
-                    NetworkServer.Spawn(card, connectionToClient);
-                
-                    RpcShowCard(card, "Dealt", _netId, playersIdList);
-               
+            if (dealedCardsNumber < controlCards.Count)//TODO: utilizar este cuando esten todas las cartas
+                                                       //if (true)
+            {
+                GameObject card = Instantiate(controlCards[dealedCardsNumber], new Vector2(0, 0), Quaternion.identity); //TODO: utilizar este cuando esten todas las cartas
+                                                                                                                        //GameObject card = Instantiate(controlCards[0], new Vector2(0, 0), Quaternion.identity);
+                NetworkServer.Spawn(card, connectionToClient);
 
-                 
+                RpcShowCard(card, "Dealt", _netId, playersIdList);
+
+
+
                 if (isServer)
                 {
                     UpdateCardsDealed();
-                }  
-                
+                }
+
             }
             else
             {
-               // RpcLogToClients("cartas de control agotadas!");
+                // RpcLogToClients("cartas de control agotadas!");
             }
 
-            
+
 
         }
     }
@@ -225,7 +225,7 @@ public class PlayerManager : NetworkBehaviour
         //If this is the Server, trigger the UpdateTurnsPlayed() method to demonstrate how to implement game logic on card drop
         if (isServer)
         {
-              UpdateCardsPlayed(); //UpdateTurnsPlayed(); 
+            UpdateCardsPlayed(); //UpdateTurnsPlayed(); 
         }
     }
 
@@ -268,31 +268,37 @@ public class PlayerManager : NetworkBehaviour
     [ClientRpc]
     void RpcLogToClients(string message)
     {
-      Debug.Log(message);
+        Debug.Log(message);
     }
 
     //ClientRpcs are methods requested by the Server to run on all Clients, and require the [ClientRpc] attribute immediately preceding them
     [ClientRpc]
     void RpcShowCard(GameObject card, string type, uint _cardNetId, List<uint> playersIdList)
     {
-       //if the card has been "Dealt," determine whether this Client has authority over it, and send it either to the PlayerArea or EnemyArea, accordingly. For the latter, flip it so the player can't see the front!
+        //if the card has been "Dealt," determine whether this Client has authority over it, and send it either to the PlayerArea or EnemyArea, accordingly. For the latter, flip it so the player can't see the front!
 
         uint _localUid = NetworkClient.localPlayer.netId;
-        
+
         if (type == "Dealt")
         {
-           
-            if  (_localUid == _cardNetId)  
+
+            if (_localUid == _cardNetId)
             {
-               
+                // Obtener el componente RectTransform del objeto
+                RectTransform rectTransform = playerArea.GetComponent<RectTransform>();
+                // Modificar el ancho del objeto
+                //rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x + card.GetComponent<RectTransform>().sizeDelta.x, rectTransform.sizeDelta.y);
+                rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x + 185, rectTransform.sizeDelta.y);
+
                 //card.transform.Rotate(0, 0, -90);
                 card.transform.localScale = new Vector3((float)1, (float)1, 1);
                 card.transform.SetParent(playerArea.transform, false);
 
             }
-            else{
+            else
+            {
                 setEnemyCardParent(card, _cardNetId, playersIdList);
-               
+
             }
 
 
@@ -300,16 +306,16 @@ public class PlayerManager : NetworkBehaviour
         //if the card has been "Played," send it to the DropZone. If this Client doesn't have authority over it, flip it so the player can now see the front!
         else if (type == "Played")
         {
-           // card.transform.SetParent(dropZone.transform, false);
+            // card.transform.SetParent(dropZone.transform, false);
             NetworkServer.Destroy(card);
             if (!isOwned)
-            {                
-               //TODO: aqui se podria manjear el puntaje
+            {
+                //TODO: aqui se podria manjear el puntaje
             }
         }
     }
 
-  
+
     void setEnemyCardParent(GameObject card, uint _cardNetId, List<uint> playersIdList)
     {
         //playersIdList.ForEach(s => Debug.Log("iduser" + s));
@@ -339,16 +345,16 @@ public class PlayerManager : NetworkBehaviour
             rightUserId = playersIdList[userIndex + 1];
         }
 
-        if(_cardNetId == leftUserId)
-        {            
-           // card.transform.Rotate(Vector3.forward, 90f);
+        if (_cardNetId == leftUserId)
+        {
+            // card.transform.Rotate(Vector3.forward, 90f);
             card.transform.SetParent(enemyAreaL.transform, false);
             card.GetComponent<CardFlipper>().Flip();
         }
         if (_cardNetId == rightUserId)
         {
-           // card.transform.Rotate(Vector3.back, 90f);
-            card.transform.SetParent(enemyAreaR.transform, false);            
+            // card.transform.Rotate(Vector3.back, 90f);
+            card.transform.SetParent(enemyAreaR.transform, false);
             card.GetComponent<CardFlipper>().Flip();
         }
 
@@ -387,17 +393,17 @@ public class PlayerManager : NetworkBehaviour
     [Command]
     public void CmdIncrementClick(GameObject card)
     {
-          RpcIncrementClick(card);//clicks on the same card
+        RpcIncrementClick(card);//clicks on the same card
     }
 
     //RpcIncrementClick() is called on all clients to increment the NumberOfClicks SyncVar within the IncrementClick script and log it to the debugger to demonstrate that it's working
     [ClientRpc]
-    void RpcIncrementClick(GameObject card) 
+    void RpcIncrementClick(GameObject card)
     {
         card.GetComponent<IncrementClick>().NumberOfClicks++;
-       // Debug.Log("This card has been clicked " + card.GetComponent<IncrementClick>().NumberOfClicks + " times!");
+        // Debug.Log("This card has been clicked " + card.GetComponent<IncrementClick>().NumberOfClicks + " times!");
     }
-    
+
     public void EndTurn_GameManager()
     {
         CmdEndTurnGameManagerCon(this);
@@ -459,7 +465,7 @@ public class PlayerManager : NetworkBehaviour
 
             EnviarTurnoATodosLosJugadores(allPlayers);
         }
- 
+
     }
 
     //[ClientRpc]
